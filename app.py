@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, session, redirect, send_from_directory
 from dotenv import load_dotenv
+import subprocess
 
 load_dotenv()
 
@@ -9,6 +10,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "default_insecure_key")
 
 USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 PASSWORD = os.getenv("ADMIN_PASSWORD", "398104521h")
+FLAG_PATH = os.getenv("FLAG_PATH", "flag.txt")
 
 UPLOAD_FOLDER = "./uploads"
 PORT = int(os.getenv("FLASK_PORT", 8080))
@@ -50,6 +52,8 @@ def admin():
         </form>
         <br>
         <a href="/lfi?file=app.py">Test LFI reading app.py</a>
+        <br>
+        <a href="/exec?cmd=ls">Test Command Injection</a>
     '''
 
 @app.route("/uploads/<path:filename>")
@@ -63,6 +67,25 @@ def lfi():
         return "<h3>Usage: /lfi?file=PATH</h3>"
     try:
         with open(target_file, "r", encoding="utf-8", errors="ignore") as f:
+            return f"<pre>{f.read()}</pre>"
+    except Exception as e:
+        return f"<p>Error: {e}</p>"
+
+@app.route("/exec")
+def exec_cmd():
+    cmd = request.args.get("cmd")
+    if not cmd:
+        return "<h3>Usage: /exec?cmd=COMMAND</h3>"
+    try:
+        output = subprocess.getoutput(cmd)
+        return f"<pre>{output}</pre>"
+    except Exception as e:
+        return f"<p>Error: {e}</p>"
+
+@app.route("/flag")
+def show_flag():
+    try:
+        with open(FLAG_PATH, "r") as f:
             return f"<pre>{f.read()}</pre>"
     except Exception as e:
         return f"<p>Error: {e}</p>"
