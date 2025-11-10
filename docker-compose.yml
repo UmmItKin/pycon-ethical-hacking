@@ -1,0 +1,12 @@
+services:
+  vuln-web:
+    build: .
+    container_name: vuln-web
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - ./uploads:/app/uploads
+    restart: unless-stopped
