@@ -32,6 +32,8 @@ def login():
           Password: <input type="password" name="password"><br>
           <input type="submit" value="Login">
         </form>
+        <h1>玩爛了再叫我 reboot 整台機器就好了 XD</h1>
+        <h1>By: UmmIt Kin</h1>
     '''
 
 @app.route("/admin", methods=["GET", "POST"])
