@@ -5,7 +5,7 @@ RUN apt update && \
     sudo vim nano tmux curl wget git \
     nmap masscan whatweb \
     sqlmap dirb nikto wafw00f \
-    ffuf gobuster wfuzz \
+    ffuf gobuster wfuzz whois \
     wpscan \
     metasploit-framework \
     hydra hashcat john seclists \
